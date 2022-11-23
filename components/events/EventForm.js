@@ -3,22 +3,31 @@ import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import { Button, Form } from 'react-bootstrap';
 import { getGames } from '../../utils/data/gameData';
-import { createEvent } from '../../utils/data/eventData';
+import { createEvent, updateEvent } from '../../utils/data/eventData';
 
-export default function EventForm({ user }) {
-  const [games, setGames] = useState([]);
-  const [currentEvent, setCurrentEvent] = useState({
+export default function EventForm({ user, obj }) {
+  const initialState = {
     game: 0,
     description: '',
     date: '',
     time: '',
     organizer: user.uid,
-  });
+  };
+  const [games, setGames] = useState([]);
+  const [currentEvent, setCurrentEvent] = useState(initialState);
   const router = useRouter();
 
   useEffect(() => {
     getGames().then(setGames);
-  }, []);
+    if (obj.id) {
+      setCurrentEvent({
+        game: obj.game,
+        description: obj.description,
+        date: obj.date,
+        time: obj.time,
+      });
+    }
+  }, [obj]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,7 +48,11 @@ export default function EventForm({ user }) {
       time: currentEvent.time,
       organizer: user.uid,
     };
-    createEvent(event).then(() => router.push('/events'));
+    if (obj.id) {
+      updateEvent(event, obj.id).then(() => router.push('/events'));
+    } else {
+      createEvent(event).then(() => router.push('/events'));
+    }
   };
 
   return (
@@ -81,4 +94,21 @@ EventForm.propTypes = {
   user: PropTypes.shape({
     uid: PropTypes.string.isRequired,
   }).isRequired,
+  obj: PropTypes.shape({
+    id: PropTypes.number,
+    game: PropTypes.string,
+    description: PropTypes.string,
+    date: PropTypes.string,
+    time: PropTypes.string,
+  }),
+};
+
+EventForm.defaultProps = {
+  obj: PropTypes.shape({
+    id: '',
+    game: '',
+    description: '',
+    date: '',
+    time: '',
+  }),
 };
