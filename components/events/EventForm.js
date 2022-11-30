@@ -96,7 +96,15 @@ EventForm.propTypes = {
   }).isRequired,
   obj: PropTypes.shape({
     id: PropTypes.number,
-    game: PropTypes.string,
+    game: PropTypes.shape({
+      id: PropTypes.number,
+      title: PropTypes.string,
+      maker: PropTypes.string,
+      number_of_players: PropTypes.number,
+      skill_level: PropTypes.number,
+      game_type: PropTypes.number,
+      gamer: PropTypes.number,
+    }),
     description: PropTypes.string,
     date: PropTypes.string,
     time: PropTypes.string,

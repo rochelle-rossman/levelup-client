@@ -12,6 +12,7 @@ export default function EditGame() {
 
   useEffect(() => {
     getSingleGame(id).then(setEditGame);
+    // console.warn(editGame);
   }, [id]);
 
   return (
