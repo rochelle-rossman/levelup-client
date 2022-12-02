@@ -7,7 +7,6 @@ import { deleteGame } from '../../utils/data/gameData';
 
 const GameCard = ({
   gameObj, onUpdate,
-  // id, title, maker, numberOfPlayers, skillLevel, onUpdate, gamer,
 }) => {
   const { user } = useAuth();
 
@@ -22,16 +21,16 @@ const GameCard = ({
       <Card.Header>By: {gameObj.maker}</Card.Header>
       <Card.Body>
         <Card.Title>{gameObj.title}</Card.Title>
-        <Card.Text>{gameObj.numberOfPlayers} players needed</Card.Text>
+        <Card.Text>{gameObj.number_of_players} players needed</Card.Text>
         <Link href={`/games/${gameObj.id}`} passHref>
-          <Button variant="primary">VIEW</Button>
+          <Button variant="light">VIEW</Button>
         </Link>
-        {user.id === gameObj?.gamer.id ? (
+        {user.id === gameObj.gamer.id ? (
           <>
-            <Link href={`/games/edit/${gameObj?.id}`} passHref>
-              <Button variant="success">EDIT</Button>
+            <Link href={`/games/edit/${gameObj.id}`} passHref>
+              <Button variant="light">EDIT</Button>
             </Link>
-            <Button variant="danger" onClick={() => deleteThisGame(gameObj.id)}>
+            <Button variant="light" onClick={() => deleteThisGame(gameObj.id)}>
               DELETE
             </Button>
           </>
@@ -39,7 +38,7 @@ const GameCard = ({
           ''
         )}
       </Card.Body>
-      <Card.Footer className="text-muted">Skill Level: {gameObj.skillLevel}</Card.Footer>
+      <Card.Footer>Skill Level: {gameObj.skill_level}</Card.Footer>
     </Card>
   );
 };
@@ -49,8 +48,8 @@ GameCard.propTypes = {
     id: PropTypes.number,
     title: PropTypes.string,
     maker: PropTypes.string,
-    numberOfPlayers: PropTypes.number,
-    skillLevel: PropTypes.number,
+    number_of_players: PropTypes.number,
+    skill_level: PropTypes.number,
     gamer: PropTypes.shape({
       id: PropTypes.number,
       bio: PropTypes.string,

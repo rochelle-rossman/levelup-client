@@ -1,7 +1,12 @@
 import { clientCredentials } from '../client';
 
-const getEvents = () => new Promise((resolve, reject) => {
-  fetch(`${clientCredentials.databaseURL}/events`)
+const getEvents = (uid) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/events`, {
+    method: 'GET',
+    headers: {
+      Authorization: uid,
+    },
+  })
     .then((response) => response.json())
     .then(resolve)
     .catch(reject);
@@ -43,6 +48,26 @@ const deleteEvent = (id) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+const joinEvent = (eventId, uid) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/events/${eventId}/signup`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ uid }),
+  })
+    .then((response) => resolve(response))
+    .catch((error) => reject(error));
+});
+
+const leaveEvent = (eventId, uid) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/events/${eventId}/leave`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ uid }),
+  })
+    .then((response) => resolve(response))
+    .catch((error) => reject(error));
+});
+
 export {
-  getEvents, createEvent, getSingleEvent, updateEvent, deleteEvent,
+  getEvents, createEvent, getSingleEvent, updateEvent, deleteEvent, leaveEvent, joinEvent,
 };
