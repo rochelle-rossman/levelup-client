@@ -20,12 +20,14 @@ function Home() {
     <article className="games">
       <h1>Games</h1>
       <Button
+        variant="dark"
         onClick={() => {
           router.push('/games/new');
         }}
       >
         Register New Game
       </Button>
+      <hr />
       {games.map((game) => (
         <section key={`game--${game.id}`} className="game">
           <GameCard gameObj={game} onUpdate={getAllGames} />
